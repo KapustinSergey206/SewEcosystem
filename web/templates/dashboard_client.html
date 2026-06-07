@@ -1,0 +1,286 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Личный кабинет</span>
+    <h1>Кабинет клиента</h1>
+    <p class="lead">Оформление заказа и просмотр всех созданных заявок.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container dashboard-grid">
+    <section class="panel">
+      <h2>Создать заказ</h2>
+
+      <form method="post" action="/dashboard/orders" class="form-grid" id="order-form">
+        <div class="grid-2">
+          <label>
+            Контактное лицо
+            <input type="text" name="contact_name" required>
+          </label>
+
+          <label>
+            Телефон
+            <input type="text" name="contact_phone" required>
+          </label>
+        </div>
+
+        <label>
+          Комментарий к заказу
+          <textarea name="comment"
+            placeholder="Например: размеры, ткань, срок изготовления, фирменные цвета"></textarea>
+        </label>
+
+        <div class="order-products">
+          <div class="calc-toolbar">
+            <input type="text" id="productSearch" placeholder="Поиск товара..." class="search-input">
+          </div>
+
+          <!-- Контейнер для товаров с пагинацией -->
+          <div id="productsContainer">
+            {{range .Products}}
+            <div class="calc-row" data-product-name="{{.Name}}" data-product-category="{{.Category}}">
+              <div>
+                <strong>{{.Name}}</strong>
+                <div class="calc-sub">{{.Category}} · {{printf "%.2f" .Price}} ₽ / шт.</div>
+              </div>
+              <div class="calc-input-wrap">
+                <input class="qty-input" type="number" min="0" value="0" name="qty_{{.ID}}" data-price="{{printf " %.2f"
+                  .Price}}">
+              </div>
+            </div>
+            {{end}}
+          </div>
+
+          <!-- Элементы пагинации -->
+          <div class="pagination-controls"
+            style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line);">
+            <button type="button" id="prevPage" class="page-nav-btn" style="height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: #08142e;
+    color: white;
+    cursor: pointer;">←
+              Назад</button>
+            <span id="pageInfo" style="font-size: 14px; color: var(--muted);">Страница 1</span>
+            <button type="button" id="nextPage" class="page-nav-btn" style="height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: #08142e;
+    color: white;
+    cursor: pointer;">Вперёд
+              →</button>
+          </div>
+        </div>
+
+        <div class="summary-inline">
+          <span>Предварительная сумма:</span>
+          <strong><span id="order-live-total">0.00</span> ₽</strong>
+        </div>
+
+        <button class="btn" type="submit">Отправить заказ</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Мои заказы</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Номер</th>
+              <th>Статус</th>
+              <th>Сумма</th>
+              <th>Дата</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Orders}}
+            <tr>
+              <td>{{.OrderNumber}}</td>
+              <td><span class="status-badge status-{{.Status}}">{{.Status}}</span></td>
+              <td>{{printf "%.2f" .TotalAmount}} ₽</td>
+              <td>{{.CreatedAt.Format "02.01.2006 15:04"}}</td>
+            </tr>
+            {{else}}
+            <tr>
+              <td colspan="4">Заказов пока нет</td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // === ЭЛЕМЕНТЫ ДЛЯ РАСЧЁТА СУММЫ ===
+    const inputs = document.querySelectorAll(".qty-input");
+    const totalBox = document.getElementById("order-live-total");
+
+    // === ЭЛЕМЕНТЫ ДЛЯ ПОИСКА ===
+    const searchInput = document.getElementById("productSearch");
+
+    // === ЭЛЕМЕНТЫ ДЛЯ ПАГИНАЦИИ ===
+    const prevBtn = document.getElementById("prevPage");
+    const nextBtn = document.getElementById("nextPage");
+    const pageInfo = document.getElementById("pageInfo");
+
+    // === ПОЛУЧАЕМ ВСЕ ТОВАРЫ ===
+    const allProducts = document.querySelectorAll(".calc-row");
+
+    // === НАСТРОЙКИ ПАГИНАЦИИ ===
+    const perPage = 5;  // Показывать по 5 товаров на странице
+    let currentPage = 1;
+    let currentProducts = [...allProducts];  // Текущий массив товаров (с учётом фильтрации)
+
+    // === ФУНКЦИЯ ПЕРЕСЧЁТА СУММЫ ===
+    function recalc() {
+      let total = 0;
+
+      inputs.forEach(input => {
+        const qty = parseInt(input.value || "0", 10);
+        const price = parseFloat(input.dataset.price || "0");
+        if (qty > 0) total += qty * price;
+      });
+
+      totalBox.textContent = total.toFixed(2);
+    }
+
+    // === ФУНКЦИЯ ФИЛЬТРАЦИИ (ПОИСКА) ===
+    function filterProducts() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+
+      // Фильтруем товары
+      currentProducts = [...allProducts].filter(row => {
+        const productName = row.getAttribute("data-product-name") || "";
+        const productCategory = row.getAttribute("data-product-category") || "";
+
+        const productNameText = productName.toLowerCase();
+        const productCategoryText = productCategory.toLowerCase();
+
+        if (searchTerm === "") return true;
+        return productNameText.includes(searchTerm) || productCategoryText.includes(searchTerm);
+      });
+
+      // Сбрасываем на первую страницу
+      currentPage = 1;
+
+      // Перерисовываем страницу
+      renderPage();
+    }
+
+    // === ФУНКЦИЯ ОТРИСОВКИ ТЕКУЩЕЙ СТРАНИЦЫ ===
+    function renderPage() {
+      // Скрываем все товары
+      allProducts.forEach(product => {
+        product.style.display = "none";
+      });
+
+      // Вычисляем, какие товары показывать на текущей странице
+      const start = (currentPage - 1) * perPage;
+      const end = start + perPage;
+      const productsToShow = currentProducts.slice(start, end);
+
+      // Показываем нужные товары
+      productsToShow.forEach(product => {
+        product.style.display = "flex";
+      });
+
+      // Обновляем информацию о странице
+      const totalPages = Math.ceil(currentProducts.length / perPage);
+
+      if (totalPages === 0) {
+        pageInfo.textContent = "Страница 0 / 0";
+      } else {
+        pageInfo.textContent = `Страница ${currentPage} / ${totalPages}`;
+      }
+
+      // Обновляем состояние кнопок
+      if (prevBtn) {
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.style.opacity = currentPage === 1 ? "0.5" : "1";
+        prevBtn.style.cursor = currentPage === 1 ? "not-allowed" : "pointer";
+      }
+
+      if (nextBtn) {
+        nextBtn.disabled = currentPage >= totalPages;
+        nextBtn.style.opacity = currentPage >= totalPages ? "0.5" : "1";
+        nextBtn.style.cursor = currentPage >= totalPages ? "not-allowed" : "pointer";
+      }
+    }
+
+    // === ФУНКЦИЯ ДЛЯ СЛЕДУЮЩЕЙ СТРАНИЦЫ ===
+    function nextPage() {
+      const totalPages = Math.ceil(currentProducts.length / perPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPage();
+      }
+    }
+
+    // === ФУНКЦИЯ ДЛЯ ПРЕДЫДУЩЕЙ СТРАНИЦЫ ===
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage();
+      }
+    }
+
+    // === НАВЕШИВАЕМ ОБРАБОТЧИКИ ===
+
+    // Пересчёт суммы при изменении количества
+    inputs.forEach(input => input.addEventListener("input", recalc));
+
+    // Поиск при вводе текста
+    if (searchInput) {
+      searchInput.addEventListener("input", filterProducts);
+    }
+
+    // Пагинация
+    if (nextBtn) {
+      nextBtn.addEventListener("click", nextPage);
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", prevPage);
+    }
+
+    // Первоначальный расчёт и отрисовка
+    recalc();
+    renderPage();
+  });
+</script>
+
+<style>
+  /* Дополнительные стили для пагинации */
+  .page-nav-btn {
+    transition: all 0.2s ease;
+  }
+
+  .page-nav-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .page-nav-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .calc-row {
+    transition: all 0.2s ease;
+  }
+
+  .pagination-controls {
+    margin-top: 20px;
+  }
+</style>
+{{end}}

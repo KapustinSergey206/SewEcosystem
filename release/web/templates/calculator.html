@@ -1,0 +1,146 @@
+{{ define "content" }}
+
+<section class="calculator-page">
+
+  <div class="container">
+
+    <div class="calculator-layout">
+
+      <div class="calculator-left">
+
+        <div class="calculator-top">
+
+          <h1>Калькулятор заказа</h1>
+
+          <input type="text" id="productSearch" placeholder="Поиск товара..." class="search-input">
+
+        </div>
+
+        <div id="productsContainer" class="calculator-products">
+
+          {{ range .Products }}
+
+          <div class="calc-product">
+
+            <div class="calc-product-info">
+
+              <div>
+
+                <h3>{{ .Name }}</h3>
+
+                <span>
+                  {{ .Category }}
+                </span>
+
+                <strong>
+                  {{ printf "%.2f" .Price }} ₽ / шт
+                </strong>
+
+              </div>
+
+            </div>
+
+            <input type="number" min="0" value="0" class="qty-input" data-price="{{ .Price }}">
+
+          </div>
+
+          {{ end }}
+
+        </div>
+
+        <div class="pagination">
+
+          <button id="prevPage">
+            ← Назад
+          </button>
+
+          <span id="pageInfo">
+            1
+          </span>
+
+          <button id="nextPage">
+            Вперёд →
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="calculator-right">
+
+        <div class="summary-box">
+
+          <h2>Итог</h2>
+
+          <div class="summary-item">
+
+            <span>Позиций</span>
+
+            <strong id="itemsCount">
+              0
+            </strong>
+
+          </div>
+
+          <div class="summary-item">
+
+            <span>Сумма</span>
+
+            <strong id="totalPrice">
+              0 ₽
+            </strong>
+
+          </div>
+
+          <button type="button" id="go-to-order" class="btn btn-dark full">
+            В кабинет
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script src="/static/js/calculator.js"></script>
+
+<script>
+
+  document.getElementById("go-to-order")
+    .addEventListener("click", () => {
+
+      const items = [];
+
+      document.querySelectorAll(".qty-input")
+        .forEach(input => {
+
+          const qty = parseInt(input.value || "0");
+
+          if (qty > 0) {
+
+            items.push({
+              product_id: input.name.replace("qty_", ""),
+              quantity: qty
+            });
+
+          }
+
+        });
+
+      localStorage.setItem(
+        "pending_order",
+        JSON.stringify(items)
+      );
+
+      window.location.href =
+        "/dashboard";
+
+    });
+
+</script>
+
+{{ end }}

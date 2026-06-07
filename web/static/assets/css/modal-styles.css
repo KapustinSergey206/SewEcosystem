@@ -1,0 +1,271 @@
+/* Стили для выравнивания карточек каталога */
+.catalogue__item {
+    height: 500px;
+}
+
+.catalogue__link {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.catalogue__desc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.catalogue__img {
+    height: 350px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catalogue__img-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Стили для модального окна */
+.catalogue__popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: none;
+}
+
+.popup__box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup__wrap {
+    display: flex;
+    height: 100%;
+    max-height: 85vh;
+    min-height: 500px;
+}
+
+.popup__left {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup__gallery {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.gallery__display {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.gallery__list {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+.gallery__item {
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.gallery__item.active {
+    border-color: #007bff;
+}
+
+.gallery__img-pic {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.popup__right {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.popup__head {
+    margin-bottom: 20px;
+}
+
+.popup__title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.popup__body {
+    flex: 1;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    max-height: 600px;
+    padding-right: 10px;
+}
+
+.popup__elem {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.popup__desc p {
+    margin: 0;
+}
+
+.popup__price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.popup__controls {
+    margin-top: auto;
+}
+
+.popup__btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup__btn:hover {
+    background-color: #c82333;
+}
+
+.popup__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1001;
+}
+
+.popup__close-btn {
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.popup__close-btn {
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.popup__close-btn:before,
+.popup__close-btn:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    background: black;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.popup__close-btn:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Стили для формы заказа поверх модального окна */
+.form__first {
+    z-index: 2000 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.popup-thanks {
+    z-index: 2000 !important;
+}
+
+.popup-err {
+    z-index: 2000 !important;
+}
+
+/* Стили для скролла */
+.popup__body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.popup__body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.popup__body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.popup__body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .popup__wrap {
+        flex-direction: column;
+        max-height: 90vh;
+    }
+
+    .popup__left {
+        flex: 0 0 auto;
+        max-height: 50vh;
+    }
+
+    .popup__right {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .gallery__display {
+        max-height: 200px;
+    }
+}

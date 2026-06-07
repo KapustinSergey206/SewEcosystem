@@ -1,0 +1,27 @@
+{{define "content"}}
+<section class="auth-section">
+  <div class="container auth-wrap">
+    <div class="auth-card">
+      <span class="eyebrow">Авторизация</span>
+      <h1>Вход в систему</h1>
+      <p class="lead small">Войдите как клиент или администратор.</p>
+
+      <form method="post" class="form-grid">
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+
+        <label>
+          Пароль
+          <input type="password" name="password" required>
+        </label>
+
+        <button class="btn" type="submit">Войти</button>
+      </form>
+
+      <p class="helper">Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
+    </div>
+  </div>
+</section>
+{{end}}

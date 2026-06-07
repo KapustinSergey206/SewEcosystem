@@ -1,0 +1,46 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Администрирование</span>
+    <h1>Управление заказами</h1>
+    <p class="lead">Просмотр всех заказов, переход в карточку заказа и изменение статуса.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Номер</th>
+              <th>Клиент</th>
+              <th>Телефон</th>
+              <th>Статус</th>
+              <th>Сумма</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Orders}}
+            <tr>
+              <td>{{.OrderNumber}}</td>
+              <td>{{.ContactName}}</td>
+              <td>{{.ContactPhone}}</td>
+              <td><span class="status-badge status-{{.Status}}">{{.Status}}</span></td>
+              <td>{{printf "%.2f" .TotalAmount}} ₽</td>
+              <td><a href="/admin/orders/{{.OrderNumber}}" class="link-btn">Открыть</a></td>
+            </tr>
+            {{else}}
+            <tr>
+              <td colspan="6">Заказов пока нет</td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}

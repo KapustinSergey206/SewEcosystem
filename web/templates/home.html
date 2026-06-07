@@ -1,0 +1,154 @@
+{{define "content"}}
+<section class="hero-section hero-home">
+  <div class="container hero-home-grid">
+    <div class="hero-home-left">
+      <span class="eyebrow">Швейное предприятие полного цикла</span>
+      <h1>Пошив спецодежды, корпоративной формы и рабочих комплектов</h1>
+      <p class="lead">
+        Каталог продукции, онлайн-калькулятор, регистрация клиентов, создание заказов,
+        отслеживание статусов и удобная экосистема для швейного предприятия.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/catalog" class="btn">Перейти в каталог</a>
+        <a href="/calculator" class="btn btn-dark">Открыть калькулятор</a>
+      </div>
+
+      <div class="hero-features">
+        <div class="feature-pill">Рабочая одежда</div>
+        <div class="feature-pill">Корпоративная форма</div>
+        <div class="feature-pill">Заказы онлайн</div>
+      </div>
+    </div>
+
+    <div class="hero-slider-card">
+      <div class="hero-slider" id="hero-slider">
+        <div class="hero-slide active">
+          <img src="/static/assets/images/gallery/car-washer/car-washer.jpg" alt="Рабочая одежда 1">
+        </div>
+        <div class="hero-slide">
+          <img src="/static/assets/images/gallery/car-washer/car-washer2.jpg" alt="Рабочая одежда 2">
+        </div>
+        <div class="hero-slide">
+          <img src="/static/assets/images/gallery/car-washer/car-washer3.png" alt="Рабочая одежда 3">
+        </div>
+      </div>
+
+      <div class="hero-slider-overlay">
+        <span class="hero-slider-badge">Популярная модель</span>
+        <h3>Костюм для автомойки и сервисных работ</h3>
+        <p>Удобный крой, практичные материалы и аккуратная посадка для ежедневной эксплуатации.</p>
+      </div>
+
+      <div class="hero-slider-dots" id="hero-slider-dots">
+        <button type="button" class="hero-dot active" data-slide="0" aria-label="Слайд 1"></button>
+        <button type="button" class="hero-dot" data-slide="1" aria-label="Слайд 2"></button>
+        <button type="button" class="hero-dot" data-slide="2" aria-label="Слайд 3"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Преимущества</span>
+      <h2>Современный сайт для швейного предприятия</h2>
+    </div>
+
+    <div class="cards-3">
+      <article class="info-card">
+        <h3>Каталог продукции</h3>
+        <p>Удобная многостраничная структура с карточками товаров, фотографиями и ценами из базы данных.</p>
+      </article>
+      <article class="info-card">
+        <h3>Онлайн-калькулятор</h3>
+        <p>Клиент выбирает изделия и количество, а стоимость автоматически рассчитывается по данным из PostgreSQL.</p>
+      </article>
+      <article class="info-card">
+        <h3>Личный кабинет</h3>
+        <p>После регистрации клиент может создавать заказы, а администратор — отслеживать и изменять их статусы.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Популярные товары</span>
+      <h2>Часть каталога</h2>
+    </div>
+
+    <div class="product-grid">
+      {{ range $index, $product := .Products }}
+      {{ if lt $index 8 }}
+      <article class="product-card">
+        <div class="product-image-wrap">
+          <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+        </div>
+
+        <div class="product-card-body">
+          <div class="product-meta">{{.Category}}</div>
+          <h3>{{.Name}}</h3>
+          <p>{{.Description}}</p>
+          <div class="product-bottom">
+            <strong>{{printf "%.2f" .Price}} ₽</strong>
+            <a href="/calculator" class="link-btn">Рассчитать</a>
+          </div>
+        </div>
+      </article>
+      {{end}}
+      {{end}}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll("#hero-slider .hero-slide");
+    const dots = document.querySelectorAll("#hero-slider-dots .hero-dot");
+
+    if (!slides.length) return;
+
+    let current = 0;
+    let interval = null;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+
+      current = index;
+    }
+
+    function nextSlide() {
+      const next = (current + 1) % slides.length;
+      showSlide(next);
+    }
+
+    function startSlider() {
+      interval = setInterval(nextSlide, 3500);
+    }
+
+    function resetSlider() {
+      clearInterval(interval);
+      startSlider();
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", function () {
+        showSlide(index);
+        resetSlider();
+      });
+    });
+
+    showSlide(0);
+    startSlider();
+  });
+</script>
+{{end}}

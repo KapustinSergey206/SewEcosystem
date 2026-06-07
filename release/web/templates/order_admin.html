@@ -1,0 +1,78 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Заказ</span>
+    <h1>{{.Order.OrderNumber}}</h1>
+    <p class="lead">Карточка заказа и управление его статусом.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container dashboard-grid">
+    <section class="panel">
+      <h2>Информация по заказу</h2>
+
+      <div class="detail-list">
+        <div><span>Клиент</span><strong>{{.Order.ContactName}}</strong></div>
+        <div><span>Телефон</span><strong>{{.Order.ContactPhone}}</strong></div>
+        <div><span>Статус</span><strong class="status-badge status-{{.Order.Status}}">{{.Order.Status}}</strong></div>
+        <div><span>Сумма</span><strong>{{printf "%.2f" .Order.TotalAmount}} ₽</strong></div>
+      </div>
+
+      <div class="order-comment">
+        <h3>Комментарий</h3>
+        <p>{{.Order.Comment}}</p>
+      </div>
+
+      <h3>Состав заказа</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Изделие</th>
+              <th>Количество</th>
+              <th>Цена</th>
+              <th>Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Order.Items}}
+            <tr>
+              <td>{{.ProductName}}</td>
+              <td>{{.Quantity}}</td>
+              <td>{{printf "%.2f" .UnitPrice}} ₽</td>
+              <td>{{printf "%.2f" .Subtotal}} ₽</td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside class="panel panel-accent">
+      <h2>Изменить статус</h2>
+
+      <form method="post" action="/admin/orders/{{.Order.OrderNumber}}/status" class="form-grid">
+        <label>
+          Новый статус
+          <select name="status">
+            <option value="new">new</option>
+            <option value="processing">processing</option>
+            <option value="ready">ready</option>
+            <option value="shipped">shipped</option>
+            <option value="completed">completed</option>
+            <option value="cancelled">cancelled</option>
+          </select>
+        </label>
+
+        <label>
+          Комментарий администратора
+          <textarea name="comment" placeholder="Например: отправлено в раскрой, готово к отгрузке и т.д."></textarea>
+        </label>
+
+        <button class="btn btn-dark" type="submit">Сохранить статус</button>
+      </form>
+    </aside>
+  </div>
+</section>
+{{end}}

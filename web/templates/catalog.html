@@ -1,0 +1,226 @@
+{{define "content"}}
+
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Каталог</span>
+
+    <h1>Каталог продукции</h1>
+
+    <p class="lead">
+      Каталог разбит на страницы.
+      Цены и изображения берутся из базы данных.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="product-grid">
+
+      {{range .Products}}
+
+      <article class="product-card" data-name="{{.Name}}" data-category="{{.Category}}" data-price="{{printf " %.2f"
+        .Price}}" data-image="{{.ImagePath}}" data-description="{{.Description}}">
+
+        <div class="product-image-wrap">
+
+          <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+
+        </div>
+
+        <div class="product-card-body">
+
+          <div class="product-meta">
+            {{.SKU}} · {{.Category}}
+          </div>
+
+          <h3>
+            {{.Name}}
+          </h3>
+
+          <p>
+            {{.Description}}
+          </p>
+
+          <div class="product-bottom">
+
+            <strong>
+              {{printf "%.2f" .Price}} ₽
+            </strong>
+
+            <span class="link-btn">
+              Подробнее
+            </span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      {{else}}
+
+      <p>Товаров пока нет.</p>
+
+      {{end}}
+
+    </div>
+
+    <div class="pagination">
+
+      {{if .HasPrev}}
+      <a class="page-btn" href="/catalog?page={{.PrevPage}}">
+        ← Назад
+      </a>
+      {{end}}
+
+      {{range .Pages}}
+
+      <a class="page-btn {{if eq . $.CurrentPage}}active{{end}}" href="/catalog?page={{.}}">
+
+        {{.}}
+
+      </a>
+
+      {{end}}
+
+      {{if .HasNext}}
+      <a class="page-btn" href="/catalog?page={{.NextPage}}">
+        Вперёд →
+      </a>
+      {{end}}
+
+    </div>
+
+  </div>
+
+</section>
+
+<div class="product-modal" id="productModal">
+
+  <div class="product-modal-content">
+
+    <button class="product-modal-close" id="closeModal">
+
+      ×
+
+    </button>
+
+    <div class="product-modal-grid">
+
+      <div class="product-modal-image">
+
+        <img id="modalImage" src="" alt="">
+
+      </div>
+
+      <div class="product-modal-info">
+
+        <span class="eyebrow">
+          Каталог
+        </span>
+
+        <h2 id="modalTitle"></h2>
+
+        <p id="modalCategory"></p>
+
+        <div class="modal-price">
+
+          <span id="modalPrice"></span> ₽
+
+        </div>
+
+        <p class="modal-description" id="modalDescription">
+        </p>
+
+        <div class="modal-actions">
+
+          <a href="/calculator" class="btn btn-dark">
+
+            Рассчитать стоимость
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+
+    const modal =
+      document.getElementById("productModal");
+
+    const closeBtn =
+      document.getElementById("closeModal");
+
+    const cards =
+      document.querySelectorAll(".product-card");
+
+    cards.forEach(card => {
+
+      card.addEventListener("click", () => {
+
+        document.getElementById("modalTitle")
+          .innerText =
+          card.dataset.name;
+
+        document.getElementById("modalCategory")
+          .innerText =
+          card.dataset.category;
+
+        document.getElementById("modalPrice")
+          .innerText =
+          card.dataset.price;
+
+        document.getElementById("modalDescription")
+          .innerText =
+          card.dataset.description;
+
+        document.getElementById("modalImage")
+          .src =
+          card.dataset.image;
+
+        modal.classList.add("active");
+
+        document.body.style.overflow =
+          "hidden";
+
+      });
+
+    });
+
+    closeBtn.addEventListener("click", () => {
+
+      modal.classList.remove("active");
+
+      document.body.style.overflow = "";
+
+    });
+
+    modal.addEventListener("click", e => {
+
+      if (e.target === modal) {
+
+        modal.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+      }
+
+    });
+
+  });
+
+</script>
+
+{{end}}
