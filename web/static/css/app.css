@@ -314,6 +314,119 @@ h3 {
     justify-content: center;
     padding: 18px;
     border-bottom: 1px solid #e5e7eb;
+    position: relative;
+}
+
+.product-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.product-carousel-viewport {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.product-carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform .3s ease;
+}
+
+.product-carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, .75);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.product-carousel-prev {
+    left: 8px;
+}
+
+.product-carousel-next {
+    right: 8px;
+}
+
+.product-carousel-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    z-index: 2;
+}
+
+.product-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, .25);
+    cursor: pointer;
+    padding: 0;
+}
+
+.product-carousel-dot.active {
+    background: var(--primary);
+}
+
+.product-carousel-single .product-carousel-btn,
+.product-carousel-single .product-carousel-dots {
+    display: none;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.admin-tabs a {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: #eef2ff;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.admin-tabs a.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+.inline-form {
+    margin: 0;
+    display: inline;
+}
+
+.btn-danger {
+    background: var(--danger);
+    box-shadow: 0 10px 25px rgba(220, 38, 38, .18);
 }
 
 .product-image {
@@ -585,6 +698,11 @@ tfoot th {
     color: var(--muted);
 }
 
+.helper a {
+    color: var(--text);
+    font-weight: 500;
+}
+
 .flash {
     margin: 18px 0 0;
     padding: 14px 18px;
@@ -608,7 +726,7 @@ tfoot th {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
 }
 
@@ -1055,10 +1173,21 @@ tfoot th {
     grid-template-columns: 1fr 1fr;
 }
 
+.product-modal-image {
+    min-height: 420px;
+    background: #f3f4f6;
+}
+
+.product-modal-image .product-carousel,
+.product-modal-image .product-carousel-viewport {
+    height: 100%;
+    min-height: 420px;
+}
+
 .product-modal-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .product-modal-info {

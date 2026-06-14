@@ -202,6 +202,8 @@ CREATE TABLE public.products (
     is_active boolean DEFAULT true NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     image_path text DEFAULT ''::text NOT NULL,
+    image_path_2 text DEFAULT ''::text NOT NULL,
+    image_path_3 text DEFAULT ''::text NOT NULL,
     CONSTRAINT products_price_check CHECK ((price >= (0)::numeric))
 );
 
@@ -359,34 +361,34 @@ adimn@gmail.com	123456
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.products (id, sku, name, description, category, price, is_active, created_at, image_path) FROM stdin;
-1	AUTOSERVICE-001	Костюм Автосервис	Практичный комплект для сотрудников автосервиса. Потайные застёжки, усиленные швы, удобный крой.	Костюмы	2700.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/autoser/IMG_5501.JPG
-2	LEGION-001	Костюм Легион	Универсальный рабочий костюм с контрастной строчкой и светоотражающими элементами.	Костюмы	1980.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/legion/IMG_5451.JPG
-3	GUARD-001	Костюм Охрана	Комплект для охранных структур и постовой службы. Комфортная посадка и износостойкая ткань.	Костюмы	2450.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/guard/IMG_5472.JPG
-4	TECH-001	Костюм Техник	Рабочая форма для сервисных специалистов, монтажников и техников.	Костюмы	2300.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/technician/IMG_5452.JPG
-5	VEST-001	Сигнальный жилет	Яркий сигнальный жилет для сотрудников склада, стройки и логистики.	Жилеты	790.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/waistcoat-signal/IMG_5492.JPG
-6	FLEECE-001	Флисовая куртка	Тёплая корпоративная флисовая куртка для межсезонья и холодных помещений.	Куртки	1850.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/jacket-foremen/IMG_5518.JPG
-7	CORNFLOWER-001	Костюм Василёк	Классический рабочий костюм для производства и сервиса.	Костюмы	2100.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower/IMG_5476.JPG
-8	CORNFLOWER-RED-001	Костюм Василёк красный	Яркий вариант рабочего костюма с контрастной отделкой.	Костюмы	2250.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower-red/IMG_5461.JPG
-9	CORNFLOWER-BLUE-001	Костюм Василёк синий	Износостойкий костюм для цеха, склада и выездных работ.	Костюмы	2250.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower-blue/IMG_5483.JPG
-10	MOUNTAIN-001	Костюм Горный	Практичный комплект для сложных условий эксплуатации.	Костюмы	2950.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/mountain/IMG_5437.JPG
-11	FAVORITE-001	Костюм Фаворит	Универсальная модель для повседневной рабочей формы.	Костюмы	2380.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/favorite/IMG_5446.JPG
-12	WELDER-001	Костюм Сварщика	Спецодежда для сварочных и производственных работ.	Спецодежда	3200.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/welder/IMG_5506.JPG
-13	STORM-001	Костюм Шторм	Плотная защита для уличных и монтажных работ.	Костюмы	3400.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/storm/IMG_5514.JPG
-14	GUARD-WARM-001	Костюм Охрана утеплённый	Тёплая форма для охраны и работы на улице.	Утеплённая одежда	3650.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/guard-warm/IMG_5515.JPG
-15	SIGNAL-WARM-001	Костюм Сигнал утеплённый	Тёплый сигнальный комплект со светоотражающими вставками.	Утеплённая одежда	3550.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/signal-warm/IMG_5503.JPG
-16	TROUSERS-WARM-001	Брюки утеплённые	Тёплые рабочие брюки для холодного сезона.	Брюки	1750.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/trousers-warm/IMG_5508.JPG
-17	WAISTCOAT-WARM-001	Жилет утеплённый	Тёплый жилет для склада, логистики и производства.	Жилеты	1600.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/waistcoat-warm/IMG_5488.JPG
-18	JACKET-GUARD-001	Куртка охранника	Верхняя одежда для службы охраны и патрулирования.	Куртки	2800.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/jacket-guard/IMG_6525.jpg
-19	ANTI-001	Антистатический костюм	Одежда для специальных производственных условий.	Спецодежда	3300.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/anti/IMG_5431.JPG
-20	SPECIAL-POLICE-001	Костюм спецслужб	Тактический комплект для специальных задач.	Спецодежда	3900.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/special-police/IMG_5439.JPG
-21	SIGNAL-001	Сигнальный костюм	Рабочая форма повышенной видимости.	Сигнальная одежда	2500.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/signal/IMG_5442.JPG
-22	ROBE-001	Рабочий халат	Халат для персонала производства, склада и сервиса.	Халаты	1450.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/robe/IMG_5469.JPG
-23	CAR-WASHER-001	Костюм Автомойка	Рабочий костюм для сотрудников автомойки и сервисных зон.	Костюмы	2350.00	t	2026-04-07 13:25:25.202946+03	/static/assets/images/gallery/car-washer/car-washer.jpg
-25	Energy-001	Костюм Энергия	Рабочий костюм для электриков.	Костюмы	3000.00	t	2026-04-07 13:27:36.084804+03	/static/assets/images/gallery/energy/energy.jpg
-26	Ritm-001	Костюм Ритм	Рабочий костюм для автомехаников.	Костюмы	2700.00	t	2026-04-07 13:28:38.113783+03	/static/assets/images/gallery/rhythm/ritm.jpg
-27	Trophy-001	Костюм Трофи	Рабочий костюм для автомехаников.	Костюмы	2700.00	t	2026-04-07 13:29:48.526277+03	/static/assets/images/gallery/trophy/trophy.png
-28	Flis-jacket-001	Флисовая куртка	Флисовая куртка.	Костюмы	1350.00	t	2026-04-07 13:31:44.117286+03	/static/assets/images/gallery/jacket/flis-jacket.jpg
+COPY public.products (id, sku, name, description, category, price, is_active, created_at, image_path, image_path_2, image_path_3) FROM stdin;
+1	AUTOSERVICE-001	Костюм Автосервис	Практичный комплект для сотрудников автосервиса. Потайные застёжки, усиленные швы, удобный крой.	Костюмы	2700.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/autoser/IMG_5501.JPG		
+2	LEGION-001	Костюм Легион	Универсальный рабочий костюм с контрастной строчкой и светоотражающими элементами.	Костюмы	1980.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/legion/IMG_5451.JPG		
+3	GUARD-001	Костюм Охрана	Комплект для охранных структур и постовой службы. Комфортная посадка и износостойкая ткань.	Костюмы	2450.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/guard/IMG_5472.JPG		
+4	TECH-001	Костюм Техник	Рабочая форма для сервисных специалистов, монтажников и техников.	Костюмы	2300.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/technician/IMG_5452.JPG		
+5	VEST-001	Сигнальный жилет	Яркий сигнальный жилет для сотрудников склада, стройки и логистики.	Жилеты	790.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/waistcoat-signal/IMG_5492.JPG		
+6	FLEECE-001	Флисовая куртка	Тёплая корпоративная флисовая куртка для межсезонья и холодных помещений.	Куртки	1850.00	t	2026-04-07 12:47:27.968392+03	/static/assets/images/gallery/jacket-foremen/IMG_5518.JPG		
+7	CORNFLOWER-001	Костюм Василёк	Классический рабочий костюм для производства и сервиса.	Костюмы	2100.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower/IMG_5476.JPG		
+8	CORNFLOWER-RED-001	Костюм Василёк красный	Яркий вариант рабочего костюма с контрастной отделкой.	Костюмы	2250.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower-red/IMG_5461.JPG		
+9	CORNFLOWER-BLUE-001	Костюм Василёк синий	Износостойкий костюм для цеха, склада и выездных работ.	Костюмы	2250.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/cornflower-blue/IMG_5483.JPG		
+10	MOUNTAIN-001	Костюм Горный	Практичный комплект для сложных условий эксплуатации.	Костюмы	2950.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/mountain/IMG_5437.JPG		
+11	FAVORITE-001	Костюм Фаворит	Универсальная модель для повседневной рабочей формы.	Костюмы	2380.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/favorite/IMG_5446.JPG		
+12	WELDER-001	Костюм Сварщика	Спецодежда для сварочных и производственных работ.	Спецодежда	3200.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/welder/IMG_5506.JPG		
+13	STORM-001	Костюм Шторм	Плотная защита для уличных и монтажных работ.	Костюмы	3400.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/storm/IMG_5514.JPG		
+14	GUARD-WARM-001	Костюм Охрана утеплённый	Тёплая форма для охраны и работы на улице.	Утеплённая одежда	3650.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/guard-warm/IMG_5515.JPG		
+15	SIGNAL-WARM-001	Костюм Сигнал утеплённый	Тёплый сигнальный комплект со светоотражающими вставками.	Утеплённая одежда	3550.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/signal-warm/IMG_5503.JPG		
+16	TROUSERS-WARM-001	Брюки утеплённые	Тёплые рабочие брюки для холодного сезона.	Брюки	1750.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/trousers-warm/IMG_5508.JPG		
+17	WAISTCOAT-WARM-001	Жилет утеплённый	Тёплый жилет для склада, логистики и производства.	Жилеты	1600.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/waistcoat-warm/IMG_5488.JPG		
+18	JACKET-GUARD-001	Куртка охранника	Верхняя одежда для службы охраны и патрулирования.	Куртки	2800.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/jacket-guard/IMG_6525.jpg		
+19	ANTI-001	Антистатический костюм	Одежда для специальных производственных условий.	Спецодежда	3300.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/anti/IMG_5431.JPG		
+20	SPECIAL-POLICE-001	Костюм спецслужб	Тактический комплект для специальных задач.	Спецодежда	3900.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/special-police/IMG_5439.JPG		
+21	SIGNAL-001	Сигнальный костюм	Рабочая форма повышенной видимости.	Сигнальная одежда	2500.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/signal/IMG_5442.JPG		
+22	ROBE-001	Рабочий халат	Халат для персонала производства, склада и сервиса.	Халаты	1450.00	t	2026-04-07 13:10:24.012138+03	/static/assets/images/gallery/robe/IMG_5469.JPG		
+23	CAR-WASHER-001	Костюм Автомойка	Рабочий костюм для сотрудников автомойки и сервисных зон.	Костюмы	2350.00	t	2026-04-07 13:25:25.202946+03	/static/assets/images/gallery/car-washer/car-washer.jpg	/static/assets/images/gallery/car-washer/car-washer2.jpg	/static/assets/images/gallery/car-washer/car-washer3.png
+25	Energy-001	Костюм Энергия	Рабочий костюм для электриков.	Костюмы	3000.00	t	2026-04-07 13:27:36.084804+03	/static/assets/images/gallery/energy/energy.jpg		
+26	Ritm-001	Костюм Ритм	Рабочий костюм для автомехаников.	Костюмы	2700.00	t	2026-04-07 13:28:38.113783+03	/static/assets/images/gallery/rhythm/ritm.jpg		
+27	Trophy-001	Костюм Трофи	Рабочий костюм для автомехаников.	Костюмы	2700.00	t	2026-04-07 13:29:48.526277+03	/static/assets/images/gallery/trophy/trophy.png		
+28	Flis-jacket-001	Флисовая куртка	Флисовая куртка.	Костюмы	1350.00	t	2026-04-07 13:31:44.117286+03	/static/assets/images/gallery/jacket/flis-jacket.jpg		
 \.
 
 

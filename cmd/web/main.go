@@ -57,6 +57,9 @@ func main() {
 		sr.Get("/orders", h.AdminOrders)
 		sr.Get("/orders/{orderNumber}", h.AdminOrder)
 		sr.Post("/orders/{orderNumber}/status", h.AdminUpdateStatus)
+		sr.Post("/orders/{orderNumber}/delete", h.AdminDeleteOrder)
+		sr.Get("/users", h.AdminUsers)
+		sr.Post("/users/{userID}/delete", h.AdminDeleteUser)
 	})
 
 	r.Get("/api/products", h.APIProducts)

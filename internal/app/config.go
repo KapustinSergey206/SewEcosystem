@@ -20,6 +20,7 @@ type Config struct {
 	CompanyAddress       string
 	DefaultAdminEmail    string
 	DefaultAdminPassword string
+	DeveloperEmail       string
 }
 
 func LoadConfig() Config {
@@ -35,8 +36,9 @@ func LoadConfig() Config {
 		CompanyLon:           env("COMPANY_LON", "47.251026"),
 		CompanyName:          env("COMPANY_NAME", "Партнёр"),
 		CompanyAddress:       env("COMPANY_ADDRESS", "г. Фурманов, ул. Социалистический Посёлок 4"),
-		DefaultAdminEmail:    env("DEFAULT_ADMIN_EMAIL", "admin@partner.local"),
-		DefaultAdminPassword: env("DEFAULT_ADMIN_PASSWORD", "Admin123!"),
+		DefaultAdminEmail:    env("DEFAULT_ADMIN_EMAIL", "adimn@gmail.com"),
+		DefaultAdminPassword: env("DEFAULT_ADMIN_PASSWORD", "123456"),
+		DeveloperEmail:       env("DEVELOPER_EMAIL", "kapustser@gmail.com"),
 	}
 	if cfg.Secret == "change-me" {
 		log.Println("warning: APP_SECRET uses default value")

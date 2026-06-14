@@ -9,6 +9,7 @@
   <meta name="description"
     content="Швейное предприятие: каталог, калькулятор заказа, личный кабинет клиента и администратора.">
   <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/js/product-carousel.js" defer></script>
 </head>
 
 <body>
@@ -33,7 +34,7 @@
         </form>
         {{else}}
         <a href="/login">Вход</a>
-        <a href="/register" class="btn btn-small">Регистрация</a>
+        <a href="/register">Регистрация</a>
         {{end}}
       </nav>
     </div>
@@ -60,6 +61,10 @@
         <h4>Контакты</h4>
         <p>г. Фурманов, ул. Социалистический Посёлок 4, 1</p>
         <p>+7 (963) 152-96-07</p>
+      </div>
+      <div>
+        <h4>Разработчик</h4>
+        <p><a href="mailto:{{.DeveloperEmail}}">{{.DeveloperEmail}}</a></p>
       </div>
     </div>
   </footer>

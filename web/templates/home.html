@@ -85,7 +85,30 @@
       {{ if lt $index 8 }}
       <article class="product-card">
         <div class="product-image-wrap">
-          <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+          <div class="product-carousel">
+            <div class="product-carousel-viewport">
+              <div class="product-carousel-track">
+                {{if .ImagePath}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+                {{if .ImagePath2}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath2}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+                {{if .ImagePath3}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath3}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+              </div>
+            </div>
+            <button type="button" class="product-carousel-btn product-carousel-prev" aria-label="Предыдущее фото">‹</button>
+            <button type="button" class="product-carousel-btn product-carousel-next" aria-label="Следующее фото">›</button>
+            <div class="product-carousel-dots"></div>
+          </div>
         </div>
 
         <div class="product-card-body">

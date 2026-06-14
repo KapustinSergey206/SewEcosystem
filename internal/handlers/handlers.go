@@ -32,8 +32,9 @@ type TemplateData map[string]any
 
 func (h *Handler) base(r *http.Request, title string) TemplateData {
 	td := TemplateData{
-		"Title":   title,
-		"AppName": h.Config.AppName,
+		"Title":          title,
+		"AppName":        h.Config.AppName,
+		"DeveloperEmail": h.Config.DeveloperEmail,
 	}
 
 	if u, ok := middleware.CurrentUser(r); ok {
@@ -317,6 +318,58 @@ func (h *Handler) AdminUpdateStatus(w http.ResponseWriter, r *http.Request) {
 
 	setFlash(w, "Статус заказа обновлён")
 	http.Redirect(w, r, "/admin/orders/"+chi.URLParam(r, "orderNumber"), http.StatusSeeOther)
+}
+
+func (h *Handler) AdminUsers(w http.ResponseWriter, r *http.Request) {
+	users, _ := h.Repo.ListUsers(r.Context())
+	td := h.base(r, "Управление пользователями")
+	td["Users"] = users
+	h.Views.Render(w, "users_admin.html", td)
+}
+
+func (h *Handler) AdminDeleteOrder(w http.ResponseWriter, r *http.Request) {
+	orderNumber := chi.URLParam(r, "orderNumber")
+	err := h.Repo.DeleteOrder(r.Context(), orderNumber)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			setFlash(w, "Заказ не найден")
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		setFlash(w, "Заказ "+orderNumber+" удалён")
+	}
+	http.Redirect(w, r, "/admin/orders", http.StatusSeeOther)
+}
+
+func (h *Handler) AdminDeleteUser(w http.ResponseWriter, r *http.Request) {
+	userID, err := strconv.ParseInt(chi.URLParam(r, "userID"), 10, 64)
+	if err != nil {
+		http.Error(w, "Некорректный идентификатор пользователя", http.StatusBadRequest)
+		return
+	}
+
+	current, ok := middleware.CurrentUser(r)
+	if ok && current.UserID == userID {
+		setFlash(w, "Нельзя удалить собственный аккаунт")
+		http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
+		return
+	}
+
+	err = h.Repo.DeleteUser(r.Context(), userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			setFlash(w, "Пользователь не найден или это администратор")
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		setFlash(w, "Пользователь удалён")
+	}
+
+	http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
 }
 
 func (h *Handler) APIProducts(w http.ResponseWriter, r *http.Request) {

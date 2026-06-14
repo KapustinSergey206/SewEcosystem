@@ -20,6 +20,8 @@ type Product struct {
 	Category    string
 	Price       float64
 	ImagePath   string
+	ImagePath2  string
+	ImagePath3  string
 	IsActive    bool
 }
 

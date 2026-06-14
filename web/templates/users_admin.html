@@ -1,0 +1,59 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Администрирование</span>
+    <h1>Управление пользователями</h1>
+    <p class="lead">Просмотр зарегистрированных клиентов и удаление аккаунтов.</p>
+    <div class="admin-tabs">
+      <a href="/admin/orders">Заказы</a>
+      <a href="/admin/users" class="active">Пользователи</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ФИО</th>
+              <th>Email</th>
+              <th>Телефон</th>
+              <th>Роль</th>
+              <th>Дата регистрации</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Users}}
+            <tr>
+              <td>{{.FullName}}</td>
+              <td>{{.Email}}</td>
+              <td>{{.Phone}}</td>
+              <td>{{.Role}}</td>
+              <td>{{.CreatedAt.Format "02.01.2006 15:04"}}</td>
+              <td>
+                {{if eq .Role "client"}}
+                <form method="post" action="/admin/users/{{.ID}}/delete" class="inline-form"
+                  onsubmit="return confirm('Удалить пользователя {{.FullName}}?');">
+                  <button type="submit" class="btn btn-danger btn-small">Удалить</button>
+                </form>
+                {{else}}
+                <span class="muted">—</span>
+                {{end}}
+              </td>
+            </tr>
+            {{else}}
+            <tr>
+              <td colspan="6">Пользователей пока нет</td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}

@@ -4,6 +4,10 @@
     <span class="eyebrow">Администрирование</span>
     <h1>Управление заказами</h1>
     <p class="lead">Просмотр всех заказов, переход в карточку заказа и изменение статуса.</p>
+    <div class="admin-tabs">
+      <a href="/admin/orders" class="active">Заказы</a>
+      <a href="/admin/users">Пользователи</a>
+    </div>
   </div>
 </section>
 
@@ -20,6 +24,7 @@
               <th>Статус</th>
               <th>Сумма</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -31,10 +36,16 @@
               <td><span class="status-badge status-{{.Status}}">{{.Status}}</span></td>
               <td>{{printf "%.2f" .TotalAmount}} ₽</td>
               <td><a href="/admin/orders/{{.OrderNumber}}" class="link-btn">Открыть</a></td>
+              <td>
+                <form method="post" action="/admin/orders/{{.OrderNumber}}/delete" class="inline-form"
+                  onsubmit="return confirm('Удалить заказ {{.OrderNumber}}?');">
+                  <button type="submit" class="btn btn-danger btn-small">Удалить</button>
+                </form>
+              </td>
             </tr>
             {{else}}
             <tr>
-              <td colspan="6">Заказов пока нет</td>
+              <td colspan="7">Заказов пока нет</td>
             </tr>
             {{end}}
           </tbody>

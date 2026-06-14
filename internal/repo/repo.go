@@ -79,7 +79,7 @@ func (r *Repository) EnsureAdmin(ctx context.Context, fullName, email, phone, pa
 
 func (r *Repository) ListProducts(ctx context.Context) ([]models.Product, error) {
 	rows, err := r.DB.QueryContext(ctx, `
-		SELECT id, sku, name, description, category, price, image_path, is_active
+		SELECT id, sku, name, description, category, price, image_path, image_path_2, image_path_3, is_active
 		FROM products
 		WHERE is_active=true
 		ORDER BY id
@@ -93,7 +93,8 @@ func (r *Repository) ListProducts(ctx context.Context) ([]models.Product, error)
 	for rows.Next() {
 		var p models.Product
 		if err := rows.Scan(
-			&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price, &p.ImagePath, &p.IsActive,
+			&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price,
+			&p.ImagePath, &p.ImagePath2, &p.ImagePath3, &p.IsActive,
 		); err != nil {
 			return nil, err
 		}
@@ -105,11 +106,12 @@ func (r *Repository) ListProducts(ctx context.Context) ([]models.Product, error)
 func (r *Repository) GetProduct(ctx context.Context, id int64) (*models.Product, error) {
 	var p models.Product
 	err := r.DB.QueryRowContext(ctx, `
-		SELECT id, sku, name, description, category, price, image_path, is_active
+		SELECT id, sku, name, description, category, price, image_path, image_path_2, image_path_3, is_active
 		FROM products
 		WHERE id=$1 AND is_active=true
 	`, id).Scan(
-		&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price, &p.ImagePath, &p.IsActive,
+		&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price,
+		&p.ImagePath, &p.ImagePath2, &p.ImagePath3, &p.IsActive,
 	)
 	if err != nil {
 		return nil, err
@@ -400,7 +402,7 @@ func (r *Repository) ListProductsPaged(ctx context.Context, limit, offset int) (
 	}
 
 	rows, err := r.DB.QueryContext(ctx, `
-		SELECT id, sku, name, description, category, price, image_path, is_active
+		SELECT id, sku, name, description, category, price, image_path, image_path_2, image_path_3, is_active
 		FROM products
 		WHERE is_active = true
 		ORDER BY id
@@ -415,7 +417,8 @@ func (r *Repository) ListProductsPaged(ctx context.Context, limit, offset int) (
 	for rows.Next() {
 		var p models.Product
 		if err := rows.Scan(
-			&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price, &p.ImagePath, &p.IsActive,
+			&p.ID, &p.SKU, &p.Name, &p.Description, &p.Category, &p.Price,
+			&p.ImagePath, &p.ImagePath2, &p.ImagePath3, &p.IsActive,
 		); err != nil {
 			return nil, 0, err
 		}
@@ -423,6 +426,62 @@ func (r *Repository) ListProductsPaged(ctx context.Context, limit, offset int) (
 	}
 
 	return items, total, rows.Err()
+}
+
+func (r *Repository) ListUsers(ctx context.Context) ([]models.User, error) {
+	rows, err := r.DB.QueryContext(ctx, `
+		SELECT id, full_name, email, phone, password_hash, role, created_at
+		FROM users
+		ORDER BY created_at DESC
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var items []models.User
+	for rows.Next() {
+		var u models.User
+		if err := rows.Scan(
+			&u.ID, &u.FullName, &u.Email, &u.Phone, &u.PasswordHash, &u.Role, &u.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, u)
+	}
+	return items, rows.Err()
+}
+
+func (r *Repository) DeleteOrder(ctx context.Context, orderNumber string) error {
+	res, err := r.DB.ExecContext(ctx, `
+		DELETE FROM orders
+		WHERE order_number=$1
+	`, strings.TrimSpace(orderNumber))
+	if err != nil {
+		return err
+	}
+
+	affected, _ := res.RowsAffected()
+	if affected == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
+}
+
+func (r *Repository) DeleteUser(ctx context.Context, userID int64) error {
+	res, err := r.DB.ExecContext(ctx, `
+		DELETE FROM users
+		WHERE id=$1 AND role <> 'admin'
+	`, userID)
+	if err != nil {
+		return err
+	}
+
+	affected, _ := res.RowsAffected()
+	if affected == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
 }
 
 func BuildOrderNumber(id int64) string { return fmt.Sprintf("ORDER-%06d", id) }

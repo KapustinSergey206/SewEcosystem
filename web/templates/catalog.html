@@ -21,12 +21,35 @@
 
       {{range .Products}}
 
-      <article class="product-card" data-name="{{.Name}}" data-category="{{.Category}}" data-price="{{printf " %.2f"
-        .Price}}" data-image="{{.ImagePath}}" data-description="{{.Description}}">
+      <article class="product-card" data-name="{{.Name}}" data-category="{{.Category}}" data-price="{{printf "%.2f" .Price}}"
+        data-images="{{.ImagePath}}|{{.ImagePath2}}|{{.ImagePath3}}" data-description="{{.Description}}">
 
         <div class="product-image-wrap">
 
-          <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+          <div class="product-carousel">
+            <div class="product-carousel-viewport">
+              <div class="product-carousel-track">
+                {{if .ImagePath}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+                {{if .ImagePath2}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath2}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+                {{if .ImagePath3}}
+                <div class="product-carousel-slide">
+                  <img src="{{.ImagePath3}}" alt="{{.Name}}" class="product-image">
+                </div>
+                {{end}}
+              </div>
+            </div>
+            <button type="button" class="product-carousel-btn product-carousel-prev" aria-label="Предыдущее фото">‹</button>
+            <button type="button" class="product-carousel-btn product-carousel-next" aria-label="Следующее фото">›</button>
+            <div class="product-carousel-dots"></div>
+          </div>
 
         </div>
 
@@ -112,7 +135,14 @@
 
       <div class="product-modal-image">
 
-        <img id="modalImage" src="" alt="">
+        <div class="product-carousel" id="modalCarousel">
+          <div class="product-carousel-viewport">
+            <div class="product-carousel-track" id="modalCarouselTrack"></div>
+          </div>
+          <button type="button" class="product-carousel-btn product-carousel-prev" id="modalCarouselPrev" aria-label="Предыдущее фото">‹</button>
+          <button type="button" class="product-carousel-btn product-carousel-next" id="modalCarouselNext" aria-label="Следующее фото">›</button>
+          <div class="product-carousel-dots" id="modalCarouselDots"></div>
+        </div>
 
       </div>
 
@@ -186,9 +216,7 @@
           .innerText =
           card.dataset.description;
 
-        document.getElementById("modalImage")
-          .src =
-          card.dataset.image;
+        buildModalCarousel(parseProductImages(card.dataset.images));
 
         modal.classList.add("active");
 
