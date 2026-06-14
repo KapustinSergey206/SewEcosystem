@@ -1247,3 +1247,372 @@ tfoot th {
     }
 
 }
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* ---------- Ноутбуки ---------- */
+
+@media (max-width: 1200px) {
+
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .hero-grid,
+    .dashboard-grid,
+    .calculator-layout,
+    .grid-2 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* ---------- Планшеты ---------- */
+
+@media (max-width: 992px) {
+
+    .header-inner {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .site-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero-grid,
+    .dashboard-grid,
+    .calculator-layout {
+        display: grid;
+        grid-template-columns: 1fr !important;
+    }
+
+    .panel,
+    .auth-card,
+    .order-card,
+    .dashboard-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px;
+    }
+
+    .calc-row {
+        gap: 15px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ---------- Телефоны ---------- */
+
+@media (max-width: 768px) {
+
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    h1 {
+        font-size: 32px !important;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 24px !important;
+        line-height: 1.2;
+    }
+
+    h3 {
+        font-size: 20px !important;
+    }
+
+    .lead {
+        font-size: 15px;
+    }
+
+    .header-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .site-nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .site-nav a {
+        font-size: 14px;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn,
+    .primary-btn,
+    .secondary-btn,
+    .submit-btn {
+        width: 100%;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .product-card {
+        width: 100%;
+        height: auto;
+    }
+
+    .product-card-body {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .product-bottom {
+        margin-top: auto;
+    }
+
+    .calc-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .qty-input,
+    input,
+    select,
+    textarea {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr !important;
+    }
+
+    .panel {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .page-btn {
+        min-width: 40px;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    table {
+        min-width: 700px;
+    }
+
+    .order-products {
+        max-height: 450px;
+        overflow-y: auto;
+    }
+}
+
+/* ---------- Маленькие телефоны ---------- */
+
+@media (max-width: 480px) {
+
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    h1 {
+        font-size: 26px !important;
+    }
+
+    h2 {
+        font-size: 22px !important;
+    }
+
+    h3 {
+        font-size: 18px !important;
+    }
+
+    .lead {
+        font-size: 14px;
+    }
+
+    .brand {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .brand-mark {
+        width: 42px;
+        height: 42px;
+    }
+
+    .panel,
+    .auth-card,
+    .product-card {
+        border-radius: 14px;
+    }
+
+    .product-card-body {
+        padding: 14px;
+    }
+
+    .page-btn {
+        min-width: 34px;
+        min-height: 34px;
+        padding: 6px;
+    }
+
+    .site-nav a {
+        font-size: 13px;
+    }
+
+    .dashboard-grid {
+        gap: 14px;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+}
+
+/* ---------- Слайдер товаров ---------- */
+
+.product-slider {
+    position: relative;
+}
+
+.product-slider img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.slider-btn.prev {
+    left: 10px;
+}
+
+.slider-btn.next {
+    right: 10px;
+}
+
+/* ---------- Модальное окно товара ---------- */
+
+.product-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.product-modal.active {
+    display: flex;
+}
+
+.product-modal-content {
+    width: min(900px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+}
+
+/* ---------- Таблицы ---------- */
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-wrap table {
+    min-width: 700px;
+}
+
+/* ---------- Кабинет ---------- */
+
+.dashboard-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.panel {
+    max-width: 100%;
+}
+
+/* ---------- Каталог ---------- */
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-bottom {
+    margin-top: auto;
+}
