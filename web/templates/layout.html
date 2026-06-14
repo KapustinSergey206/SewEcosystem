@@ -68,6 +68,167 @@
       </div>
     </div>
   </footer>
+
+  <!-- Кнопка вызова QR-кода -->
+  <button class="vk-qr-button" id="showVkQrBtn" aria-label="Показать QR-код">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm16 0h-4v-2h2v-2h-6v6h2v2h-2v2h6v-6zm-6 0h-2v-2h2v2z"
+        fill="currentColor" />
+      <path d="M18 18h2v2h-2v-2zm-4 0h2v2h-2v-2z" fill="currentColor" />
+    </svg>
+    <span>QR код</span>
+  </button>
+
+  <!-- Модальное окно с QR-кодом -->
+  <div id="vkQrModal" class="vk-modal" style="display: none;">
+    <div class="vk-modal-content">
+      <button class="vk-modal-close" id="closeVkQrBtn">&times;</button>
+      <div class="vk-modal-body">
+        <h3>📱 QR-код ВК бота</h3>
+        <p>Наведите камеру телефона на QR-код</p>
+
+        <div class="qr-container">
+          <img src="/static/assets/images/vk_bot.png" alt="QR-код ВК бота" class="qr-code">
+        </div>
+
+        <p class="vk-modal-hint">Отсканируйте камерой телефона → перейдёте в ВК бота</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .vk-qr-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #4c75a3;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .vk-qr-button:hover {
+      transform: scale(1.05);
+      background: #2c5a8c;
+    }
+
+    .vk-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vk-modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    .vk-modal-close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 30px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #999;
+      transition: color 0.2s;
+    }
+
+    .vk-modal-close:hover {
+      color: #333;
+    }
+
+    .vk-modal-body {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .vk-modal-body h3 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+    }
+
+    .qr-container {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .qr-code {
+      width: 250px;
+      height: 250px;
+      border: 3px solid #4c75a3;
+      border-radius: 16px;
+      padding: 10px;
+      background: white;
+    }
+
+    .vk-modal-hint {
+      font-size: 14px;
+      color: #666;
+      margin: 15px 0 0 0;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script>
+    const showBtn = document.getElementById('showVkQrBtn');
+    const modal = document.getElementById('vkQrModal');
+    const closeBtn = document.getElementById('closeVkQrBtn');
+
+    function showModal() {
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    if (showBtn) showBtn.addEventListener('click', showModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    }
+  </script>
+
 </body>
 
 </html>
