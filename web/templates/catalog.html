@@ -7,8 +7,7 @@
     <h1>Каталог продукции</h1>
 
     <p class="lead">
-      Каталог разбит на страницы.
-      Цены и изображения берутся из базы данных.
+      Все модели с актуальными ценами и фото. Листай и выбирай под свои задачи.
     </p>
   </div>
 </section>
@@ -21,8 +20,8 @@
 
       {{range .Products}}
 
-      <article class="product-card" data-name="{{.Name}}" data-category="{{.Category}}" data-price="{{printf "%.2f" .Price}}"
-        data-images="{{.ImagePath}}|{{.ImagePath2}}|{{.ImagePath3}}" data-description="{{.Description}}">
+      <article class="product-card" data-name="{{.Name}}" data-category="{{.Category}}" data-price="{{printf " %.2f"
+        .Price}}" data-images="{{.ImagePath}}|{{.ImagePath2}}|{{.ImagePath3}}" data-description="{{.Description}}">
 
         <div class="product-image-wrap">
 
@@ -46,8 +45,10 @@
                 {{end}}
               </div>
             </div>
-            <button type="button" class="product-carousel-btn product-carousel-prev" aria-label="Предыдущее фото">‹</button>
-            <button type="button" class="product-carousel-btn product-carousel-next" aria-label="Следующее фото">›</button>
+            <button type="button" class="product-carousel-btn product-carousel-prev"
+              aria-label="Предыдущее фото">‹</button>
+            <button type="button" class="product-carousel-btn product-carousel-next"
+              aria-label="Следующее фото">›</button>
             <div class="product-carousel-dots"></div>
           </div>
 
@@ -139,8 +140,10 @@
           <div class="product-carousel-viewport">
             <div class="product-carousel-track" id="modalCarouselTrack"></div>
           </div>
-          <button type="button" class="product-carousel-btn product-carousel-prev" id="modalCarouselPrev" aria-label="Предыдущее фото">‹</button>
-          <button type="button" class="product-carousel-btn product-carousel-next" id="modalCarouselNext" aria-label="Следующее фото">›</button>
+          <button type="button" class="product-carousel-btn product-carousel-prev" id="modalCarouselPrev"
+            aria-label="Предыдущее фото">‹</button>
+          <button type="button" class="product-carousel-btn product-carousel-next" id="modalCarouselNext"
+            aria-label="Следующее фото">›</button>
           <div class="product-carousel-dots" id="modalCarouselDots"></div>
         </div>
 
