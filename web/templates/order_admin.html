@@ -73,6 +73,9 @@
         <button class="btn btn-dark" type="submit">Сохранить статус</button>
       </form>
 
+      <!-- Добавлен отступ между формами -->
+      <div style="margin-top: 20px;"></div>
+
       <form method="post" action="/admin/orders/{{.Order.OrderNumber}}/delete" class="form-grid"
         onsubmit="return confirm('Удалить заказ {{.Order.OrderNumber}}?');">
         <button class="btn btn-danger" type="submit">Удалить заказ</button>
