@@ -16,18 +16,19 @@
         <div class="grid-2">
           <label>
             Контактное лицо
-            <input type="text" name="contact_name" required>
+            <input type="text" name="contact_name" required maxlength="100">
           </label>
 
           <label>
             Телефон
-            <input type="text" name="contact_phone" required>
+            <input type="tel" name="contact_phone" id="orderPhone" required placeholder="+7 (___) ___-__-__"
+              pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" maxlength="18">
           </label>
         </div>
 
         <label>
           Комментарий к заказу
-          <textarea name="comment"
+          <textarea name="comment" maxlength="500"
             placeholder="Например: размеры, ткань, срок изготовления, фирменные цвета"></textarea>
         </label>
 
@@ -45,8 +46,8 @@
                 <div class="calc-sub">{{.Category}} · {{printf "%.2f" .Price}} ₽ / шт.</div>
               </div>
               <div class="calc-input-wrap">
-                <input class="qty-input" type="number" min="0" value="0" name="qty_{{.ID}}" data-price="{{printf " %.2f"
-                  .Price}}">
+                <input class="qty-input" type="number" min="0" max="999" value="0" name="qty_{{.ID}}"
+                  data-price="{{printf " %.2f" .Price}}" oninput="validateQty(this)">
               </div>
             </div>
             {{end}}
@@ -118,7 +119,55 @@
 </section>
 
 <script>
+  // Функция валидации количества товара
+  function validateQty(input) {
+    let value = parseInt(input.value) || 0;
+
+    // Ограничение минимум 0
+    if (value < 0) {
+      value = 0;
+    }
+
+    // Ограничение максимум 999
+    if (value > 999) {
+      value = 999;
+    }
+
+    // Запрещаем ввод дробных чисел
+    input.value = Math.floor(value);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    // === МАСКА ТЕЛЕФОНА ===
+    const phoneInput = document.getElementById('orderPhone');
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+
+        if (value.length > 11) {
+          value = value.slice(0, 11);
+        }
+
+        let formattedValue = '+7';
+
+        if (value.length > 1) {
+          formattedValue += ' (' + value.slice(1, 4);
+        }
+        if (value.length >= 4) {
+          formattedValue += ') ' + value.slice(4, 7);
+        }
+        if (value.length >= 7) {
+          formattedValue += '-' + value.slice(7, 9);
+        }
+        if (value.length >= 9) {
+          formattedValue += '-' + value.slice(9, 11);
+        }
+
+        e.target.value = formattedValue;
+      });
+    }
+
     // === ЭЛЕМЕНТЫ ДЛЯ РАСЧЁТА СУММЫ ===
     const inputs = document.querySelectorAll(".qty-input");
     const totalBox = document.getElementById("order-live-total");
@@ -135,9 +184,9 @@
     const allProducts = document.querySelectorAll(".calc-row");
 
     // === НАСТРОЙКИ ПАГИНАЦИИ ===
-    const perPage = 5;  // Показывать по 5 товаров на странице
+    const perPage = 5;
     let currentPage = 1;
-    let currentProducts = [...allProducts];  // Текущий массив товаров (с учётом фильтрации)
+    let currentProducts = [...allProducts];
 
     // === ФУНКЦИЯ ПЕРЕСЧЁТА СУММЫ ===
     function recalc() {
@@ -152,11 +201,10 @@
       totalBox.textContent = total.toFixed(2);
     }
 
-    // === ФУНКЦИЯ ФИЛЬТРАЦИИ (ПОИСКА) ===
+    // === ОСТАЛЬНЫЕ ФУНКЦИИ БЕЗ ИЗМЕНЕНИЙ ===
     function filterProducts() {
       const searchTerm = searchInput.value.toLowerCase().trim();
 
-      // Фильтруем товары
       currentProducts = [...allProducts].filter(row => {
         const productName = row.getAttribute("data-product-name") || "";
         const productCategory = row.getAttribute("data-product-category") || "";
@@ -168,31 +216,23 @@
         return productNameText.includes(searchTerm) || productCategoryText.includes(searchTerm);
       });
 
-      // Сбрасываем на первую страницу
       currentPage = 1;
-
-      // Перерисовываем страницу
       renderPage();
     }
 
-    // === ФУНКЦИЯ ОТРИСОВКИ ТЕКУЩЕЙ СТРАНИЦЫ ===
     function renderPage() {
-      // Скрываем все товары
       allProducts.forEach(product => {
         product.style.display = "none";
       });
 
-      // Вычисляем, какие товары показывать на текущей странице
       const start = (currentPage - 1) * perPage;
       const end = start + perPage;
       const productsToShow = currentProducts.slice(start, end);
 
-      // Показываем нужные товары
       productsToShow.forEach(product => {
         product.style.display = "flex";
       });
 
-      // Обновляем информацию о странице
       const totalPages = Math.ceil(currentProducts.length / perPage);
 
       if (totalPages === 0) {
@@ -201,7 +241,6 @@
         pageInfo.textContent = `Страница ${currentPage} / ${totalPages}`;
       }
 
-      // Обновляем состояние кнопок
       if (prevBtn) {
         prevBtn.disabled = currentPage === 1;
         prevBtn.style.opacity = currentPage === 1 ? "0.5" : "1";
@@ -215,7 +254,6 @@
       }
     }
 
-    // === ФУНКЦИЯ ДЛЯ СЛЕДУЮЩЕЙ СТРАНИЦЫ ===
     function nextPage() {
       const totalPages = Math.ceil(currentProducts.length / perPage);
       if (currentPage < totalPages) {
@@ -224,7 +262,6 @@
       }
     }
 
-    // === ФУНКЦИЯ ДЛЯ ПРЕДЫДУЩЕЙ СТРАНИЦЫ ===
     function prevPage() {
       if (currentPage > 1) {
         currentPage--;
@@ -232,17 +269,18 @@
       }
     }
 
-    // === НАВЕШИВАЕМ ОБРАБОТЧИКИ ===
+    // Навешиваем обработчики на изменение количества
+    inputs.forEach(input => {
+      input.addEventListener("input", function () {
+        validateQty(this);
+        recalc();
+      });
+    });
 
-    // Пересчёт суммы при изменении количества
-    inputs.forEach(input => input.addEventListener("input", recalc));
-
-    // Поиск при вводе текста
     if (searchInput) {
       searchInput.addEventListener("input", filterProducts);
     }
 
-    // Пагинация
     if (nextBtn) {
       nextBtn.addEventListener("click", nextPage);
     }
@@ -251,14 +289,12 @@
       prevBtn.addEventListener("click", prevPage);
     }
 
-    // Первоначальный расчёт и отрисовка
     recalc();
     renderPage();
   });
 </script>
 
 <style>
-  /* Дополнительные стили для пагинации */
   .page-nav-btn {
     transition: all 0.2s ease;
   }
@@ -281,6 +317,15 @@
 
   .pagination-controls {
     margin-top: 20px;
+  }
+
+  /* Стили для невалидных полей */
+  input:invalid {
+    border-color: #ff4444;
+  }
+
+  input:invalid:focus {
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
   }
 </style>
 {{end}}

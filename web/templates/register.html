@@ -6,7 +6,7 @@
       <h1>Создание аккаунта клиента</h1>
       <p class="lead small">После регистрации вы сможете оформлять заказы и отслеживать их статусы.</p>
 
-      <form method="post" class="form-grid">
+      <form method="post" class="form-grid" id="registerForm">
         <label>
           ФИО
           <input type="text" name="full_name" required>
@@ -14,17 +14,19 @@
 
         <label>
           Телефон
-          <input type="text" name="phone" required>
+          <input type="tel" name="phone" id="regPhone" required placeholder="+7 (___) ___-__-__"
+            pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" maxlength="18">
+          <small style="color: var(--muted); font-size: 12px;">Формат: +7 (999) 123-45-67</small>
         </label>
 
         <label>
           Email
-          <input type="email" name="email" required>
+          <input type="email" name="email" id="regEmail" required maxlength="50">
         </label>
 
         <label>
           Пароль
-          <input type="password" name="password" required>
+          <input type="password" name="password" required minlength="6">
         </label>
 
         <button class="btn" type="submit">Создать аккаунт</button>
@@ -34,4 +36,39 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const phoneInput = document.getElementById('regPhone');
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Удаляем всё кроме цифр
+
+        // Ограничиваем длину до 11 цифр (российский номер)
+        if (value.length > 11) {
+          value = value.slice(0, 11);
+        }
+
+        // Форматируем под маску +7 (XXX) XXX-XX-XX
+        let formattedValue = '+7';
+
+        if (value.length > 1) {
+          formattedValue += ' (' + value.slice(1, 4);
+        }
+        if (value.length >= 4) {
+          formattedValue += ') ' + value.slice(4, 7);
+        }
+        if (value.length >= 7) {
+          formattedValue += '-' + value.slice(7, 9);
+        }
+        if (value.length >= 9) {
+          formattedValue += '-' + value.slice(9, 11);
+        }
+
+        e.target.value = formattedValue;
+      });
+    }
+  });
+</script>
 {{end}}
